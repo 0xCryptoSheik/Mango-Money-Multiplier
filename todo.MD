@@ -1,0 +1,4 @@
+- rename the project on github
+- write a clean readme (title, description, requirements, install steps, how to use, disclaimer)
+- clean up the project structure, folders, filenames
+- I want someone who never used the terminal or Mango before to be able to use it
