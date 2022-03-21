@@ -37,6 +37,7 @@ import fetch from "node-fetch";
 import os from "os";
 import { OrderInfo } from "types";
 import { logger, zipDict } from "./utils";
+import process from 'process';
 
 let meAndTheBoys = ["5sBpMQgTi7phxqRnErfbwx29vUsbUZoy1MLgY7aXuqeo", "GvSCxCi3y2Mt4JPExhLEZXTbYVGBXv9DNXYomvwRVEak"]
 

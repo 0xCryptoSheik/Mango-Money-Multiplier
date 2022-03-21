@@ -331,7 +331,7 @@ def aThread(market):
         logger.error(f"Exception: {e}")
 
     while True:
-        CYCLE_INTERVAL = random.randint(30,200) / 2#mm.mango_service_v3_client.lenAccs
+        CYCLE_INTERVAL = random.randint(int(os.environ["delays"].split(',')[0]),int(os.environ["delays"].split(',')[1]))# / 2#mm.mango_service_v3_client.lenAccs
         
 
         logger.info("next cycle...")
@@ -354,13 +354,13 @@ if __name__ == "__main__":
     done = False 
     while done == False:
         try:
-            shutil.copy("../lala.json", "./lala2.json")
-            with open("./lala2.json", "r") as f:
+            shutil.copy("../intermediaryObj.json", "./values.json")
+            with open("./values.json", "r") as f:
                 LALA = json.loads(f.read())
                 done = True
         except Exception as e:
             try:
-                with open("../lala.json", "r") as f:
+                with open("../intermediaryObj.json", "r") as f:
                     LALA = json.loads(f.read())
                 done = True
             except Exception as e:
@@ -376,13 +376,13 @@ if __name__ == "__main__":
         done = False 
         while done == False:
             try:
-                shutil.copy("../lala.json", "./lala2.json")
-                with open("./lala2.json", "r") as f:
+                shutil.copy("../intermediaryObj.json", "./values.json")
+                with open("./values.json", "r") as f:
                     LALA = json.loads(f.read())
                     done = True
             except Exception as e:
                 try:
-                    with open("../lala.json", "r") as f:
+                    with open("../intermediaryObj.json", "r") as f:
                         LALA = json.loads(f.read())
                     done = True
                 except Exception as e:

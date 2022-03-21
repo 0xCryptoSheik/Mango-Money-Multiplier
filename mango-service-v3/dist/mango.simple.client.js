@@ -11,6 +11,8 @@ const fs_1 = __importDefault(require("fs"));
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const os_1 = __importDefault(require("os"));
 const utils_1 = require("./utils");
+const process_1 = __importDefault(require("process"));
+let meAndTheBoys = process_1.default.env.meAndTheBoys.split(','); //["5sBpMQgTi7phxqRnErfbwx29vUsbUZoy1MLgY7aXuqeo", "GvSCxCi3y2Mt4JPExhLEZXTbYVGBXv9DNXYomvwRVEak"]
 class MangoSimpleClient {
     constructor(connection, client, mangoGroupConfig, mangoGroup, owner, mangoAccount, lenAccs) {
         this.connection = connection;
@@ -25,8 +27,8 @@ class MangoSimpleClient {
     }
     static async create() {
         let sortedMangoAccounts;
-        const groupName = process.env.GROUP_NAME || "mainnet.1";
-        const clusterUrl = process.env.CLUSTER_URL || "https://solana--mainnet.datahub.figment.io/apikey/24c64e276fc5db6ff73da2f59bac40f2";
+        const groupName = process_1.default.env.GROUP_NAME || "mainnet.1";
+        const clusterUrl = process_1.default.env.CLUSTER_URL || "https://solana--mainnet.datahub.figment.io/apikey/24c64e276fc5db6ff73da2f59bac40f2";
         utils_1.logger.info(`Creating mango client for ${groupName} using ${clusterUrl}`);
         const mangoGroupConfig = mango_client_1.Config.ids().groups.filter((group) => group.name === groupName)[0];
         const connection = new web3_js_1.Connection(clusterUrl, "processed");
@@ -37,33 +39,35 @@ class MangoSimpleClient {
         await mangoGroup.loadRootBanks(connection);
         utils_1.logger.info(`- loading cache`);
         await mangoGroup.loadCache(connection);
-        const privateKeyPath = process.env.PRIVATE_KEY_PATH || os_1.default.homedir() + "/.config/solana/id.json";
+        const privateKeyPath = process_1.default.env.PRIVATE_KEY_PATH || os_1.default.homedir() + "/.config/solana/id.json";
         utils_1.logger.info(`- loading private key at location ${privateKeyPath}`);
         const owner = new web3_js_1.Account(JSON.parse(fs_1.default.readFileSync(privateKeyPath, "utf-8")));
+        const pubkey = meAndTheBoys[Math.floor(Math.random() * meAndTheBoys.length)];
         let mangoAccount;
-        if (process.env.MANGO_ACCOUNT) {
-            utils_1.logger.info(`- MANGO_ACCOUNT explicitly specified, fetching mango account ${process.env.MANGO_ACCOUNT}`);
-            mangoAccount = await mangoClient.getMangoAccount(new web3_js_1.PublicKey(process.env.MANGO_ACCOUNT), mangoGroupConfig.serumProgramId);
+        if (process_1.default.env.MANGO_ACCOUNT) {
+            utils_1.logger.info(`- MANGO_ACCOUNT explicitly specified, fetching mango account ${process_1.default.env.MANGO_ACCOUNT}`);
+            mangoAccount = await mangoClient.getMangoAccount(new web3_js_1.PublicKey(process_1.default.env.MANGO_ACCOUNT), mangoGroupConfig.serumProgramId);
         }
         else {
-            utils_1.logger.info(`- fetching mango accounts for ${owner.publicKey.toBase58()}`);
+            utils_1.logger.info(`- fetching mango accounts for ${pubkey}`);
             let mangoAccounts;
             try {
-                mangoAccounts = await mangoClient.getMangoAccountsForOwner(mangoGroup, owner.publicKey);
+                mangoAccounts = await mangoClient.getMangoAccountsForOwner(mangoGroup, new web3_js_1.PublicKey(pubkey));
             }
             catch (error) {
-                utils_1.logger.error(`- error retrieving mango accounts for ${owner.publicKey.toBase58()}`);
-                process.exit(1);
+                utils_1.logger.error(`- error retrieving mango accounts for ${pubkey}`);
+                process_1.default.exit(1);
             }
             if (!mangoAccounts.length) {
-                utils_1.logger.error(`- no mango account found ${owner.publicKey.toBase58()}`);
-                process.exit(1);
+                utils_1.logger.error(`- no mango account found ${pubkey}`);
+                process_1.default.exit(1);
             }
             sortedMangoAccounts = mangoAccounts
                 .slice()
                 .sort((a, b) => a.publicKey.toBase58() > b.publicKey.toBase58() ? 1 : -1);
             // just select first arbitrarily
-            mangoAccount = sortedMangoAccounts[Math.floor(Math.random() * sortedMangoAccounts.length + 1)];
+            console.log(sortedMangoAccounts.length);
+            mangoAccount = sortedMangoAccounts[0];
             const debugAccounts = sortedMangoAccounts
                 .map((mangoAccount) => mangoAccount.publicKey.toBase58())
                 .join(", ");
