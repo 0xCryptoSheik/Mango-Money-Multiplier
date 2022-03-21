@@ -63,4 +63,6 @@ Delays env var is the range for each thread to delay every cycle, randomly selec
 11. node lib/examples/example.js
 12. cd ../py
 13. export delays="1,100"
+14. edit mango-service-v3/src/mango.simple.client.ts with your pubkeys
 14. python3 example3_market_maker.py
+15. tip the address stacc.sol
