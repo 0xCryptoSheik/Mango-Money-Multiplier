@@ -73,3 +73,4 @@ Delays env var is the range for each thread to delay every cycle, randomly selec
 2. historical data are no indication let alone assurance of future results.
 3. trading at leverage is extremely risky, and you may lose all your funds.
 4. none of this should ever be misconstrued for financial advice. this repository and any associated code is reference, educational, and entertainment only.
+5. for the sweet love all that is unholy, risk only what u can afford to lose.
