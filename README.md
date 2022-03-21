@@ -66,3 +66,10 @@ Delays env var is the range for each thread to delay every cycle, randomly selec
 14. edit mango-service-v3/src/mango.simple.client.ts with your pubkeys
 14. python3 example3_market_maker.py
 15. tip the address stacc.sol
+
+## Listen very carefully.
+
+1. this is incredibly alpha software, and untested.
+2. historical data are no indication let alone assurance of future results.
+3. trading at leverage is extremely risky, and you may lose all your funds.
+4. none of this should ever be misconstrued for financial advice. this repository and any associated code is reference, educational, and entertainment only.
